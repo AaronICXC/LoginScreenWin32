@@ -1,8 +1,12 @@
 #include <iostream>
 #include <windows.h>
 
+#define FILE_CLICK 0
+
 // procedure
 LRESULT CALLBACK wmProcedure(HWND, UINT, WPARAM, LPARAM);
+
+void addMenus(HWND);
 
 HWND hParent;
 
@@ -35,6 +39,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE prevInst, LPSTR args, int ncmdshow
 LRESULT CALLBACK wmProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
     switch (msg) {
         case WM_CREATE:
+            addMenus(hWnd);
             break;
         case WM_DESTROY:
             PostQuitMessage(0);
@@ -43,4 +48,13 @@ LRESULT CALLBACK wmProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
             return DefWindowProcW(hWnd, msg, wp, lp);
             break;
     }
+}
+
+void addMenus(HWND hWnd) {
+    HMENU hMenu = CreateMenu();
+    HMENU hFileMenu = CreateMenu();
+    AppendMenuW(hMenu, MF_STRING, FILE_CLICK, (LPCWSTR)"File");
+
+
+    SetMenu(hWnd, hMenu);
 }
