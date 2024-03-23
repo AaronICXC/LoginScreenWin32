@@ -53,7 +53,7 @@ LRESULT CALLBACK wmProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
 void addMenus(HWND hWnd) {
     HMENU hMenu = CreateMenu();
     HMENU hFileMenu = CreateMenu();
-    AppendMenuW(hMenu, MF_STRING, FILE_CLICK, (LPCWSTR)"File");
+    AppendMenuW(hMenu, MF_STRING, FILE_CLICK, L"File");
 
 
     SetMenu(hWnd, hMenu);
