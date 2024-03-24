@@ -2,6 +2,8 @@
 #include <windows.h>
 
 #define FILE_CLICK 0
+#define SAVE_LOGIN 1
+#define EXIT_PROGRAM 2
 
 // procedure
 LRESULT CALLBACK wmProcedure(HWND, UINT, WPARAM, LPARAM);
@@ -37,7 +39,26 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE prevInst, LPSTR args, int ncmdshow
 }
 
 LRESULT CALLBACK wmProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
+    int closeMsg;
+
     switch (msg) {
+        case WM_COMMAND:
+            switch(wp) {
+                case SAVE_LOGIN:
+                    std::cout << "Debug" << std::endl;
+                    break;
+                case EXIT_PROGRAM:
+                    closeMsg = MessageBoxW(hWnd, L"Are you sure you want to exit?", L"Notification", MB_YESNO);
+                    switch(closeMsg) {
+                        case IDYES:
+                            DestroyWindow(hWnd);
+                            break;
+                        case IDNO:
+                            break;
+                    }
+                    break;
+            }
+            break;
         case WM_CREATE:
             addMenus(hWnd);
             break;
@@ -53,7 +74,14 @@ LRESULT CALLBACK wmProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
 void addMenus(HWND hWnd) {
     HMENU hMenu = CreateMenu();
     HMENU hFileMenu = CreateMenu();
-    AppendMenuW(hMenu, MF_STRING, FILE_CLICK, L"File");
+    AppendMenuW(hMenu, MF_POPUP, (UINT_PTR)hFileMenu, L"File");
+
+    // scope for file options
+    {
+        AppendMenuW(hFileMenu, MF_STRING, SAVE_LOGIN, L"Save Login");
+        AppendMenuW(hFileMenu, MF_SEPARATOR, NULL, NULL);
+        AppendMenuW(hFileMenu, MF_STRING, EXIT_PROGRAM, L"Exit");
+    }
 
 
     SetMenu(hWnd, hMenu);
