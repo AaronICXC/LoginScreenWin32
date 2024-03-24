@@ -50,7 +50,7 @@ LRESULT CALLBACK wmProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
     switch (msg) {
         case WM_COMMAND:
             switch(wp) {
-                case SUBMIT_BUTTON:
+                case BN_CLICKED:
                     GetWindowTextW(hUser, uContent, sizeof(uContent));
                     GetWindowTextW(hPass, pContent, sizeof(pContent));
                     if (uContent == uSaved && pContent == pSaved) {
@@ -62,6 +62,7 @@ LRESULT CALLBACK wmProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
                     } else {
                         MessageBoxW(hWnd, L"Both fields are incorrect.", L"Notification", MB_OK);
                     }
+                    break;
                 case SAVE_LOGIN:
                     if (hUser || hPass) {
                         GetWindowTextW(hUser, uContent, sizeof(uContent));
