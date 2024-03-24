@@ -10,7 +10,7 @@ LRESULT CALLBACK wmProcedure(HWND, UINT, WPARAM, LPARAM);
 
 void addMenus(HWND);
 
-HWND hParent;
+HWND hParent, hUser, hPass;
 
 int WINAPI WinMain(HINSTANCE hInst, HINSTANCE prevInst, LPSTR args, int ncmdshow) {
     ncmdshow = 0;
@@ -74,6 +74,7 @@ LRESULT CALLBACK wmProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
 void addMenus(HWND hWnd) {
     HMENU hMenu = CreateMenu();
     HMENU hFileMenu = CreateMenu();
+    
     AppendMenuW(hMenu, MF_POPUP, (UINT_PTR)hFileMenu, L"File");
 
     // scope for file options
@@ -82,6 +83,9 @@ void addMenus(HWND hWnd) {
         AppendMenuW(hFileMenu, MF_SEPARATOR, NULL, NULL);
         AppendMenuW(hFileMenu, MF_STRING, EXIT_PROGRAM, L"Exit");
     }
+
+    hUser = CreateWindowW(L"Edit", L"Username", WS_VISIBLE | WS_CHILD | ES_AUTOVSCROLL | ES_MULTILINE, 200, 100, 150, 20, hWnd, NULL, NULL, NULL);
+    hPass = CreateWindowW(L"Edit", L"Password", WS_VISIBLE | WS_CHILD | ES_AUTOVSCROLL | ES_MULTILINE, 200, 130, 150, 20, hWnd, NULL, NULL, NULL);
 
 
     SetMenu(hWnd, hMenu);
