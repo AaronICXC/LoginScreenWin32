@@ -41,11 +41,11 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE prevInst, LPSTR args, int ncmdshow
 
 LRESULT CALLBACK wmProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
     int closeMsg;
-    LPWSTR uContent;
-    LPWSTR pContent;
+    WCHAR uContent[28];
+    WCHAR pContent[28];
 
-    LPWSTR uSaved;
-    LPWSTR pSaved;
+    WCHAR uSaved[28];
+    WCHAR pSaved[28];
 
     switch (msg) {
         case WM_COMMAND:
@@ -68,8 +68,12 @@ LRESULT CALLBACK wmProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
                         GetWindowTextW(hUser, uContent, sizeof(uContent));
                         GetWindowTextW(hPass, pContent, sizeof(pContent));
 
-                        uSaved = uContent;
-                        pSaved = pContent;
+                        for (int i = 0; i < sizeof(uContent); i++) {
+                            uSaved[i] = uContent[i];
+                        }
+                        for (int i = 0; i < sizeof(pContent); i++) {
+                            pSaved[i] = pContent[i];
+                        }
 
                         MessageBoxW(hWnd, L"Login Saved", L"Notification", MB_OK);
                     } else {
