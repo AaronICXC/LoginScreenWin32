@@ -63,8 +63,8 @@ LRESULT CALLBACK wmProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
                             userCorrect = false;
                     }
 
-                    for (int i = 0; i < 21; i++) {
-                        if(pContent[i] == pSaved[i])
+                    for (int x = 0; x < 21; x++) {
+                        if(pContent[x] == pSaved[x])
                             passCorrect = true;
                         else
                             passCorrect = false;
@@ -93,9 +93,13 @@ LRESULT CALLBACK wmProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
 
                         for (int i = 0; i <21; i++) {
                             std::cout << uSaved[i];
+                            
                         }
                         printf("\n");
-
+                        for (int i = 0; i < 21; i++) {
+                            std::cout << pSaved[i];
+                        }
+                        
                         MessageBoxW(hWnd, L"Login Saved", L"Notification", MB_OK);
                     } else {
                         MessageBoxW(hWnd, L"Fields must not be blank.", L"Notification", MB_OK);
