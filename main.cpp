@@ -1,5 +1,6 @@
 #include <iostream>
 #include <windows.h>
+#include <string>
 
 #define FILE_CLICK 0
 #define SAVE_LOGIN 1
@@ -41,39 +42,59 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE prevInst, LPSTR args, int ncmdshow
 
 LRESULT CALLBACK wmProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
     int closeMsg;
-    WCHAR uContent[28];
-    WCHAR pContent[28];
+    bool userCorrect, passCorrect;
+    char uContent[21];
+    char pContent[21];
 
-    WCHAR uSaved[28];
-    WCHAR pSaved[28];
+    char uSaved[21];
+    char pSaved[21];
 
     switch (msg) {
         case WM_COMMAND:
             switch(wp) {
                 case BN_CLICKED:
-                    GetWindowTextW(hUser, uContent, sizeof(uContent));
-                    GetWindowTextW(hPass, pContent, sizeof(pContent));
-                    if (uContent == uSaved && pContent == pSaved) {
+                    GetWindowTextA(hUser, uContent, 21);
+                    GetWindowTextA(hPass, pContent, 21);
+                    
+                    for (int i = 0; i < 21; i++) {
+                        if (uContent[i] == uSaved[i])
+                            userCorrect = true;
+                        else
+                            userCorrect = false;
+                    }
+
+                    for (int i = 0; i < 21; i++) {
+                        if(pContent[i] == pSaved[i])
+                            passCorrect = true;
+                        else
+                            passCorrect = false;
+                    }
+
+                    if (userCorrect && passCorrect) {
                         MessageBoxW(hWnd, L"Login Successful!", L"Notification", MB_OK);
-                    } else if (uContent == uSaved && pContent != pSaved) {
+                    } else if (userCorrect && !passCorrect) {
                         MessageBoxW(hWnd, L"Password Incorrect.", L"Notification", MB_OK);
-                    } else if (uContent != uSaved && pContent == pSaved) {
+                    } else if (!userCorrect && passCorrect) {
                         MessageBoxW(hWnd, L"Username Incorrect.", L"Notification", MB_OK);
                     } else {
                         MessageBoxW(hWnd, L"Both fields are incorrect.", L"Notification", MB_OK);
                     }
+
                     break;
                 case SAVE_LOGIN:
                     if (hUser || hPass) {
-                        GetWindowTextW(hUser, uContent, sizeof(uContent));
-                        GetWindowTextW(hPass, pContent, sizeof(pContent));
+                        GetWindowTextA(hUser, uContent, 21);
+                        GetWindowTextA(hPass, pContent, 21);
 
-                        for (int i = 0; i < sizeof(uContent); i++) {
+                        for (int i = 0; i < 21; i++) {
                             uSaved[i] = uContent[i];
-                        }
-                        for (int i = 0; i < sizeof(pContent); i++) {
                             pSaved[i] = pContent[i];
                         }
+
+                        for (int i = 0; i <21; i++) {
+                            std::cout << uSaved[i];
+                        }
+                        printf("\n");
 
                         MessageBoxW(hWnd, L"Login Saved", L"Notification", MB_OK);
                     } else {
@@ -117,8 +138,8 @@ void addMenus(HWND hWnd) {
         AppendMenuW(hFileMenu, MF_STRING, EXIT_PROGRAM, L"Exit");
     }
 
-    hUser = CreateWindowW(L"Edit", L"Username", WS_VISIBLE | WS_CHILD | ES_AUTOVSCROLL | ES_MULTILINE | WS_BORDER, 175, 100, 150, 20, hWnd, NULL, NULL, NULL);
-    hPass = CreateWindowW(L"Edit", L"Password", WS_VISIBLE | WS_CHILD | ES_AUTOVSCROLL | ES_MULTILINE | WS_BORDER, 175, 130, 150, 20, hWnd, NULL, NULL, NULL);
+    hUser = CreateWindowW(L"Edit", L"Username", WS_VISIBLE | WS_CHILD | WS_BORDER, 175, 100, 150, 20, hWnd, NULL, NULL, NULL);
+    hPass = CreateWindowW(L"Edit", L"Password", WS_VISIBLE | WS_CHILD | WS_BORDER, 175, 130, 150, 20, hWnd, NULL, NULL, NULL);
 
     hSubmit = CreateWindowW(L"Button", L"Submit", WS_VISIBLE | WS_CHILD | WS_BORDER, 210, 170, 75, 20, hWnd, NULL, NULL, NULL);
 
